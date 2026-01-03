@@ -1,0 +1,49 @@
+# Configuration file for Custom CUDA Inference Engine
+# This config allows you to specify model, kernels, and inference settings
+
+# Model configuration
+model:
+  # HuggingFace model ID or local path
+  path: "meta-llama/Llama-2-7b-hf"
+  
+  # Optional: Override tokenizer settings
+  tokenizer:
+    use_fast: true
+    # Add other tokenizer parameters as needed
+
+# Kernel configuration
+# Specify which kernels to use for different operations
+kernels:
+  # Decode step kernel (RMSNorm, GEMMs, SwiGLU, logits)
+  decode: "capture_decode_step"
+  
+  # Attention kernel (variable-length attention)
+  attention: "attn_varlen"
+  
+  # Embedding kernel (device-to-device row copy)
+  embedding: "d2d_row_copy"
+  
+  # Weight loader (for loading and packing weights)
+  weight_loader: "weight_loader"
+
+# Inference settings
+inference:
+  # Maximum sequence length
+  max_seq_len: 1024
+  
+  # Default device ID
+  device: 0
+  
+  # Default generation parameters
+  default_temperature: 0.8
+  default_top_p: 0.95
+  default_repetition_penalty: 1.1
+  default_repetition_window: 128
+  default_max_tokens: 500
+
+# Future: Multi-GPU configuration (placeholder for future features)
+# multi_gpu:
+#   enabled: false
+#   strategy: "data_parallel"  # or "tensor_parallel", "pipeline_parallel"
+#   devices: [0, 1, 2, 3]
+
