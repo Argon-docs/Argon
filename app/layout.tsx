@@ -7,6 +7,11 @@ import Footer from '@/components/Footer'
 export const metadata: Metadata = {
   title: 'Argon - Fast Distributed Inference Framework',
   description: 'Easy, fast, and scalable distributed inference server powered by custom kernels',
+  icons: {
+    icon: '/favicon.svg',
+    shortcut: '/favicon.svg',
+    apple: '/favicon.svg',
+  },
 }
 
 export default function RootLayout({
