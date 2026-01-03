@@ -52,10 +52,22 @@ export default function Home() {
           Argon is a fast and easy-to-use framework for distributed LLM inference and serving, 
           powered entirely by custom kernels for maximum performance.
         </p>
-        <p className="text-gray-700 text-lg leading-relaxed">
+        <p className="text-gray-700 text-lg leading-relaxed mb-4">
           Built from the ground up with performance in mind, Argon provides a scalable solution 
           for running large language models across distributed systems with minimal overhead.
         </p>
+        <div className="bg-blue-50 border border-blue-200 rounded-lg p-6 mt-6">
+          <h3 className="text-lg font-semibold text-gray-900 mb-2">✨ New Configuration System</h3>
+          <p className="text-gray-700 mb-2">
+            Argon now features a flexible, reusable configuration system that makes it easy to:
+          </p>
+          <ul className="list-disc list-inside text-gray-700 space-y-1 ml-2">
+            <li>Switch between models (LLaMA, Mistral, CodeLlama, and more) with simple config changes</li>
+            <li>Specify custom kernels via YAML configuration</li>
+            <li>Test and validate setups before running inference</li>
+            <li>Maintain backwards compatibility with the original CLI</li>
+          </ul>
+        </div>
       </div>
 
       {/* Getting Started */}

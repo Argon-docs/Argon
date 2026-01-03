@@ -16,7 +16,7 @@ export default function UserGuide() {
       <div className="grid gap-6 md:grid-cols-2 mb-12">
         <Link href="/user-guide/quickstart" className="block p-6 border border-gray-200 rounded-lg hover:border-blue-500 hover:shadow-md transition-all">
           <h2 className="text-xl font-semibold text-gray-900 mb-2">Quickstart</h2>
-          <p className="text-gray-600">Get up and running with Argon in minutes</p>
+          <p className="text-gray-600">Get up and running with Argon's new configuration system</p>
         </Link>
         
         <Link href="/user-guide/installation" className="block p-6 border border-gray-200 rounded-lg hover:border-blue-500 hover:shadow-md transition-all">
@@ -24,19 +24,29 @@ export default function UserGuide() {
           <p className="text-gray-600">Install Argon on your system</p>
         </Link>
         
-        <Link href="/user-guide/getting-started" className="block p-6 border border-gray-200 rounded-lg hover:border-blue-500 hover:shadow-md transition-all">
-          <h2 className="text-xl font-semibold text-gray-900 mb-2">Getting Started</h2>
-          <p className="text-gray-600">Learn the basics of using Argon</p>
-        </Link>
-        
-        <Link href="/user-guide/configuration" className="block p-6 border border-gray-200 rounded-lg hover:border-blue-500 hover:shadow-md transition-all">
-          <h2 className="text-xl font-semibold text-gray-900 mb-2">Configuration</h2>
-          <p className="text-gray-600">Configure Argon for your needs</p>
+        <Link href="/user-guide/configuration" className="block p-6 border border-blue-200 bg-blue-50 rounded-lg hover:border-blue-500 hover:shadow-md transition-all">
+          <h2 className="text-xl font-semibold text-gray-900 mb-2">Configuration File Format</h2>
+          <p className="text-gray-600">Complete reference for config.yaml structure</p>
         </Link>
         
         <Link href="/user-guide/models" className="block p-6 border border-gray-200 rounded-lg hover:border-blue-500 hover:shadow-md transition-all">
-          <h2 className="text-xl font-semibold text-gray-900 mb-2">Models</h2>
-          <p className="text-gray-600">Working with different model formats</p>
+          <h2 className="text-xl font-semibold text-gray-900 mb-2">Using Different Models</h2>
+          <p className="text-gray-600">Switch between LLaMA, Mistral, and other models</p>
+        </Link>
+        
+        <Link href="/user-guide/custom-kernels" className="block p-6 border border-gray-200 rounded-lg hover:border-blue-500 hover:shadow-md transition-all">
+          <h2 className="text-xl font-semibold text-gray-900 mb-2">Custom Kernels</h2>
+          <p className="text-gray-600">Implement and use custom kernels via configuration</p>
+        </Link>
+        
+        <Link href="/user-guide/testing" className="block p-6 border border-gray-200 rounded-lg hover:border-blue-500 hover:shadow-md transition-all">
+          <h2 className="text-xl font-semibold text-gray-900 mb-2">Testing and Validation</h2>
+          <p className="text-gray-600">Validate configurations with test_inference.py</p>
+        </Link>
+        
+        <Link href="/user-guide/migration" className="block p-6 border border-gray-200 rounded-lg hover:border-blue-500 hover:shadow-md transition-all">
+          <h2 className="text-xl font-semibold text-gray-900 mb-2">Migration Guide</h2>
+          <p className="text-gray-600">Upgrade from legacy CLI to configuration-based system</p>
         </Link>
         
         <Link href="/user-guide/serving" className="block p-6 border border-gray-200 rounded-lg hover:border-blue-500 hover:shadow-md transition-all">
