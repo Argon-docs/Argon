@@ -2,7 +2,7 @@
 
 import torch
 from transformers import AutoTokenizer, AutoConfig
-from typing import Dict, Any, Tuple
+from typing import Dict, Any, Tuple, Optional
 
 # Kernels will be imported lazily when needed (after setup_environment is called)
 
@@ -10,23 +10,48 @@ from typing import Dict, Any, Tuple
 class ModelState:
     """Manages model weights, configuration, and device state"""
     
-    def __init__(self, model_path: str, device_id: int = 0):
+    def __init__(self, model_path: Optional[str] = None, device_id: int = 0, config=None):
+        """
+        Initialize ModelState.
+        
+        Args:
+            model_path: Path to model (optional if config is provided)
+            device_id: CUDA device ID
+            config: Config object (optional, for backwards compatibility)
+        """
+        # Support both config-based and direct model_path initialization
+        if config is not None:
+            self.config_obj = config
+            model_path = config.model_path
+            device_id = config.device_id
+            self.tokenizer_config = config.tokenizer_config
+            self.weight_loader_name = config.kernel_weight_loader
+        else:
+            self.config_obj = None
+            self.tokenizer_config = {}
+            self.weight_loader_name = "weight_loader"
+        
+        if model_path is None:
+            raise ValueError("model_path must be provided either directly or via config")
+        
         self.device = torch.device(f"cuda:{device_id}")
         self.model_path = model_path
         
         # Load tokenizer and config
         print(f"[Model] Loading tokenizer and config from {model_path}...")
-        self.tokenizer = AutoTokenizer.from_pretrained(model_path, use_fast=True)
+        use_fast = self.tokenizer_config.get('use_fast', True)
+        self.tokenizer = AutoTokenizer.from_pretrained(model_path, use_fast=use_fast, **{k: v for k, v in self.tokenizer_config.items() if k != 'use_fast'})
         if self.tokenizer.pad_token is None:
             self.tokenizer.pad_token = self.tokenizer.eos_token
         
         self.config = AutoConfig.from_pretrained(model_path)
         self._extract_config()
         
-        # Load weights
-        print(f"[Model] Loading weights using custom weight loader...")
-        from kernels.weights.weight_loader import load_and_pack
-        self.weights = load_and_pack(model_path)
+        # Load weights using configured kernel loader
+        print(f"[Model] Loading weights using custom weight loader ({self.weight_loader_name})...")
+        from ..utils.kernel_loader import load_kernel
+        weight_loader = load_kernel(self.weight_loader_name)
+        self.weights = weight_loader['load_and_pack'](model_path)
         self._extract_weight_pointers()
     
     def _extract_config(self):

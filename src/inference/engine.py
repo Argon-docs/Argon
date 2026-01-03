@@ -2,11 +2,12 @@
 
 import math
 import torch
-from typing import Tuple
+from typing import Tuple, Optional
 
 from .model import ModelState
 from ..utils.rope import apply_rope
 from ..utils.sampling import apply_repetition_penalty, sample_top_p
+from ..utils.kernel_loader import load_kernel
 
 # Kernels will be imported when needed (after setup_environment is called)
 
@@ -14,14 +15,30 @@ from ..utils.sampling import apply_repetition_penalty, sample_top_p
 class InferenceEngine:
     """Main inference engine for custom CUDA inference"""
     
-    def __init__(self, model: ModelState, max_seq_len: int = 1024):
-        # Import kernels (lazy import after setup_environment)
-        import capture_decode_step as cds
-        import d2d_row_copy as d2d
-        import attn_varlen
-        self.cds = cds
-        self.d2d = d2d
-        self.attn_varlen = attn_varlen
+    def __init__(self, model: ModelState, max_seq_len: int = 1024, config=None):
+        """
+        Initialize InferenceEngine.
+        
+        Args:
+            model: ModelState instance
+            max_seq_len: Maximum sequence length
+            config: Config object (optional, for kernel configuration)
+        """
+        # Load kernels based on config or use defaults
+        if config is not None:
+            decode_kernel_name = config.kernel_decode
+            attention_kernel_name = config.kernel_attention
+            embedding_kernel_name = config.kernel_embedding
+        else:
+            # Default kernels for backwards compatibility
+            decode_kernel_name = "capture_decode_step"
+            attention_kernel_name = "attn_varlen"
+            embedding_kernel_name = "d2d_row_copy"
+        
+        # Load kernels dynamically
+        self.cds = load_kernel(decode_kernel_name)
+        self.attn_varlen = load_kernel(attention_kernel_name)
+        self.d2d = load_kernel(embedding_kernel_name)
         
         self.model = model
         self.max_seq_len = max_seq_len
